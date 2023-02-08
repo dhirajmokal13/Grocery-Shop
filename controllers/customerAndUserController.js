@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import nodemailer from 'nodemailer';
 import Jwt from "jsonwebtoken";
 const jwtKey = process.env.JWTKEY;
+import sendMail from '../middleware/sendMail.js';
 
 class customerAndUser {
     static getOtp = async (req, res) => {
@@ -77,6 +78,7 @@ class customerAndUser {
                     password: await bcrypt.hash(password, 10),
                 });
                 let rest = await re.save();
+                sendMail(email, 'Customer Account Created Successfully', `Congratulations ${name} Your Customer Account Created Successfully`);
                 res.status(202).send({ 'signup': true, 'reason': null });
             } else {
                 res.status(202).send({ 'signup': false, 'reason': 'Username Already Register' });
@@ -160,6 +162,7 @@ class customerAndUser {
                     password: await bcrypt.hash(password, 10),
                 });
                 await re.save();
+                sendMail(email, 'Seller Account Created Successfully', `Congratulations ${name} Your Seller Account Created Successfully`);
                 res.status(202).send({ 'signup': true, 'reason': null })
             } else {
                 res.status(202).send({ 'signup': false, 'reason': 'Seller Username Already Register' });
