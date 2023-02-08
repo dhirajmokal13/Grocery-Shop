@@ -201,7 +201,7 @@ export default function Header(props) {
             </ul>
             <form className="d-flex input-group" role="search" style={styleSearch}>
               <input className="form-control" type="search" placeholder="Search" aria-label="Search" value={search} onChange={(e) => { setSearch(e.target.value) }} />
-              <button className="btn btn-outline-success" id="searchbtn" type="submit" onClick={handleSearch}>Search</button>
+              <button className="btn btn-outline-royal" id="searchbtn" type="submit" onClick={handleSearch}>Search</button>
             </form>
 
             {localStorage.getItem('loginStatus') === 'customer' ?
