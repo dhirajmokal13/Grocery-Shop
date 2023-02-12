@@ -33,7 +33,7 @@ export const About = () => {
         } else {
             swal({
                 title: 'Failed',
-                text: location.error,
+                text: location.error.message,
                 icon: 'error',
             });
         }
