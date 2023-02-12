@@ -15,8 +15,8 @@ app.use(express.json());
 app.use('/', express.static(join(process.cwd(), "public")));
 
 app.use(cors({
-  origin: ["http://127.0.0.1:3000", "http://localhost:3000", "http://192.168.32.149:3000"],
-  methods: ['POST', 'PUT', 'GET', 'PATCH', 'DELETE'],
+  origin: JSON.parse(process.env.CLIENT_URLS),
+  methods: JSON.parse(process.env.ALLOWED_METHODS),
   credentials: true,
 }));
 
