@@ -4,5 +4,4 @@ node_modules/
 Client/node_modules/
 Client/.env/
 Client/README.md/
-
-echo ".env" >> .gitignore
+.env
