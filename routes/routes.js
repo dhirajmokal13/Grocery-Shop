@@ -5,7 +5,7 @@ import customerAndUser from '../controllers/customerAndUserController.js';
 import productController from '../controllers/productController.js';
 const router = express.Router();
 import multer from 'multer';
-import LoginVerify from '../middleware/SellerVerify.js';
+import LoginVerify from '../middleware/LoginVerify.js';
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -32,6 +32,7 @@ router.get('/sellers/data', customerAndUser.getSellerData);
 router.get('/product/seller/:sid', productController.showSellerProducts);
 router.get('/get-product/:pid', productController.getProductDetails);
 router.post('/book-product', productController.bookProduct);
+router.get('/product/invoice/:oid/:pid', LoginVerify, productController.getInvoice);
 router.post('/product/cart', productController.addCart);
 router.get('/product/cart/:customer_id', productController.getCart);
 router.delete('/product/cart/:product_id/:customer_id', productController.removeCart);

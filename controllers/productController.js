@@ -4,6 +4,8 @@ import registrationModel from "../models/customerAndUserModel.js";
 import Jwt from "jsonwebtoken";
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
+import PDFDocument from 'pdfkit';
+
 const jwtKey = process.env.JWTKEY;
 const instance = new Razorpay({
     key_id: process.env.razorpay_key_id,
@@ -176,6 +178,41 @@ class productController {
                 res.status(201).send({ 'message': "Invalid" })
             }
         })
+    }
+
+
+    static getInvoice = async (req, res) => {
+        try {
+            const { oid, pid } = req.params;
+            const product = await registrationModel.product.findById(pid, 'productName productPrice');
+            const order = await registrationModel.order.findById(oid, 'address dt');
+            const { name, mnumber, email, uname } = req.headers['userData'].user;
+
+            const doc = new PDFDocument();
+            doc.font('Helvetica-Bold').fontSize(20).text('INVOICE', { align: 'center' });
+            doc.moveDown(0.5);
+
+            doc.font('Helvetica-Bold').fontSize(12).text(`Customer Name : ${name} (${uname})`, { bold: true });
+            doc.moveDown(0.3)
+            doc.font('Helvetica').fontSize(11).text(`Product Name : ${product.productName}`, { bold: true });
+            doc.moveDown(0.2)
+            doc.font('Helvetica').fontSize(11).text(`Mobile Number : ${mnumber}`, { bold: true });
+            doc.moveDown(0.2)
+            doc.font('Helvetica').fontSize(11).text(`Email : ${email}`, { bold: true });
+            doc.moveDown(0.2)
+            doc.font('Helvetica').fontSize(11).text(`Delivery Address : ${order.address}`, { bold: true });
+            doc.moveDown(0.2)
+            doc.font('Helvetica').fontSize(11).text(`Order Date : ${order.dt}`, { bold: true });
+            doc.moveDown(0.2)
+            doc.font('Helvetica').fontSize(12).text(`Total Amount : ${product.productPrice}`, { bold: true });
+            doc.moveDown(0.4)
+            res.setHeader('Content-Type', 'application/pdf');
+            doc.pipe(res);
+            doc.end();
+        } catch (err) {
+            console.log(err)
+            res.status(404).send("Internal server error " + err);
+        }
     }
 
     static addCart = async (req, res) => {

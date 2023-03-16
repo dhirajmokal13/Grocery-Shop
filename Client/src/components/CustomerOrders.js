@@ -38,6 +38,24 @@ export const CustomerOrders = () => {
             })
     }
 
+    const generateInvoice = async (inBtn) => {
+        await axios.get(`${serverLink}/product/invoice/${inBtn.getAttribute('oid')}/${inBtn.getAttribute('pid')}`, {
+            responseType: 'blob',
+            headers: {
+                'Authorization': localStorage.getItem("token"),
+            }
+        }).then(res => {
+            const url = window.URL.createObjectURL(new Blob([res.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Invoice.pdf');
+            document.body.appendChild(link);
+            link.click();
+        }).catch(err => {
+            console.error(err);
+        })
+    }
+
     useEffect(() => {
         validateUser();
         getOrders();
@@ -65,6 +83,7 @@ export const CustomerOrders = () => {
                             </div>
                             <div className="card-footer">
                                 Delivery Address: <span className="text-secondary">{order.address}</span>
+                                {order.delivery_status === true ? <span className='ms-3' title='Generate Invoice' style={{ color: '#3d0a91', cursor: 'pointer' }} oid={order._id} pid={products[index]._id} onClick={(e) => { generateInvoice(e.target) }}>Invoice</span> : ""}
                             </div>
                         </div>
                     )
