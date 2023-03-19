@@ -7,7 +7,7 @@ function Search() {
     const { search_txt } = useParams();
     const [searchProduct, setSearchProduct] = useState([]);
     const login = localStorage.getItem('loginStatus');
-    const [txt,setTxt] = useState('');
+    const [txt, setTxt] = useState('');
     const navigate = useNavigate();
     const getProducts = () => {
         axios.get(`${serverLink}/search/${search_txt}`)
@@ -29,6 +29,11 @@ function Search() {
                 icon: 'warning',
             });
         }
+    }
+
+    // heighlight the result
+    const heighLightTxt = (txt) => {
+        return txt.replace(new RegExp(search_txt, "gi"), `<span style=color:red;background-color:yellow;">${search_txt}</span>`);
     }
 
     // add pro products to card
@@ -61,6 +66,7 @@ function Search() {
         }
     }
 
+
     useEffect(() => {
         setTxt(search_txt);
         getProducts();
@@ -81,9 +87,9 @@ function Search() {
                                     </div>
                                     <img src={`${serverLink}/product_image/${item.productImg}`} className="card-img-top" alt="..." />
                                     <div className="card-body">
-                                        <h5 className="card-title" style={{color: '#3d0a91'}}>{item.productName}</h5>
+                                        <h5 className="card-title" style={{ color: '#3d0a91' }} dangerouslySetInnerHTML={{ __html: heighLightTxt(item.productName) }}></h5>
                                         <hr />
-                                        <p className="card-text text-danger" title='Category of Product'>{item.productType}</p>
+                                        <p className="card-text text-danger" title='Category of Product' dangerouslySetInnerHTML={{ __html: heighLightTxt(item.productType) }}></p>
                                         <hr />
                                         <p className="card-text text-secondary" title='Product Description' dangerouslySetInnerHTML={{ __html: (item.productDesc).slice(0, 80) + " ......" }}></p>
                                     </div>
