@@ -13,6 +13,7 @@ import { CustomerOrders } from './components/CustomerOrders';
 import SellerOrder from './components/SellerOrder';
 import Search from './components/Search';
 import Location from './components/Location';
+import { PageNotFound } from './components/PageNotFound';
 //components end
 export const serverLink = 'http://127.0.0.1:8080';
 
@@ -32,6 +33,7 @@ function App() {
           <Route path='/seller-orders' element={<SellerOrder />} />
           <Route path='/search/:search_txt' element={<Search />} />
           <Route path='/seller/location' element={<Location />} />
+          <Route path='*' element={<PageNotFound />} />
         </Routes>
         <Footer />
       </Router>

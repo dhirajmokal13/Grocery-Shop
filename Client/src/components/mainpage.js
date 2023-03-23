@@ -75,6 +75,14 @@ export const Mainpage = () => {
             })
     }
 
+    const styles = `.img-effect img {
+        transition: 0.5s all ease-in-out;
+    }
+      
+    .img-effect:hover img {
+        transform: scale(1.5);
+    }`;
+
     return (
         <>
             <div className="container my-5">
@@ -86,6 +94,7 @@ export const Mainpage = () => {
                         ))
                     }
                 </select>
+                <style>{styles}</style>
                 <div className='row'>
                     {
                         products && products.map((pro, index) => {
@@ -95,7 +104,7 @@ export const Mainpage = () => {
                                         <div className="card-header">
                                             Price: <span className='text-success'>{pro.productPrice}</span>
                                         </div>
-                                        <img src={`${serverLink}/product_image/${pro.productImg}`} className="card-img-top" alt="..." />
+                                        <div className='img-effect' style={{overflow:"hidden"}}><img src={`${serverLink}/product_image/${pro.productImg}`} className="card-img-top" alt="..." /></div>
                                         <div className="card-body">
                                             <h5 className="card-title" style={{color: '#3d0a91'}}>{pro.productName}</h5>
                                             <hr />
