@@ -76,7 +76,7 @@ export const Mainpage = () => {
     }
 
     const styles = `.img-effect img {
-        transition: 0.5s all ease-in-out;
+        transition: 0.8s all ease-in-out;
     }
       
     .img-effect:hover img {
